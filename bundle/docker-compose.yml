@@ -1,0 +1,33 @@
+version: "3"
+services:
+  node:
+    image: "iotaledger/iri"
+    container_name: iota-node
+    volumes:
+      - "/data/blockchain/iota/node:/data"
+    command:
+      - "--port"
+      - "14265"
+      - "--remote"
+      - "--db-path"
+      - "/data"
+      # for devnet
+      - "--testnet"
+      - "-n"
+      - "udp://p101.testnet.iota.cafe:14666 udp://p102.testnet.iota.cafe:14666 udp://p103.testnet.iota.cafe:14666 udp://p104.testnet.iota.cafe:14666"
+
+  rpchub:
+    image: "mixhq/iota-rpchub"
+    container_name: iota-rpchub
+    ports:
+      - "50051:50051"
+    volumes:
+      - "/data/blockchain/iota/rpchub:/data"
+    depends_on:
+      - node
+    command:
+      - "--minWeightMagnitude"
+      - "9"  # mainnet: 14, devnet: 9
+      - "--apiAddress"
+      - "node:14265"
+
