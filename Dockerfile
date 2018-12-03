@@ -20,14 +20,13 @@ RUN apt install -y -f && \
 
 # rpchub
 RUN mkdir -p rpchub && \
-  wget -O - https://github.com/iotaledger/rpchub/archive/v1.0.0.tar.gz | tar xzf - --strip-components 1 -C rpchub
+  wget -O - https://github.com/iotaledger/rpchub/archive/master.tar.gz | tar xzf - --strip-components 1 -C rpchub
 RUN cd rpchub && bazel build -c opt //hub:hub
 
-# sqlite3
-RUN mkdir -p /data
-RUN sqlite3 /data/wallet.db3 -init /root/rpchub/schema/schema.sql .exit && \
-  sqlite3 /data/wallet.db3 -init /root/rpchub/schema/triggers.sqlite3.sql .exit
+RUN rm -f /var/cache/apt/archives/*.deb
 
-RUN rm -f /var/cache/apt/archives/*
+COPY ./entrypoint.sh /
+RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/root/rpchub/bazel-bin/hub/hub", "--dbType", "sqlite3", "--db", "/data/wallet.db3", "--minWeightMagnitude", "14", "--salt", "rJ8067pkJ4QvIuB7f7tZd"]
+ENTRYPOINT ["/entrypoint.sh"]
+

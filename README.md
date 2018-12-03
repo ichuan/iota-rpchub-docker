@@ -5,7 +5,11 @@ rpchub docker builds
 ## Running
 
 ```
-docker run --rm -it --name iota-rpchub-node -p 0.0.0.0:50051:50051 -v iota-rpchub:/data iota-rpchub:latest
+# mainnet
+docker run --rm -it --name iota-rpchub-node -p 0.0.0.0:50051:50051 -v iota-rpchub:/data iota-rpchub:latest --minWeightMagnitude 14
+
+# testnet
+docker run --rm -it --name iota-rpchub-node -p 0.0.0.0:50051:50051 -v iota-rpchub:/data iota-rpchub:latest --minWeightMagnitude 9
 ```
 
 ## Persist data
@@ -22,6 +26,6 @@ docker volume create -d local-persist -o mountpoint=/data/iota-rpchub --name=iot
 Using automated build image from <https://hub.docker.com/r/mixhq/iota-rpchub/>:
 
 ```
-docker run --rm -it --name iota-rpchub-node -p 0.0.0.0:50051:50051 -v iota-rpchub:/data mixhq/iota-rpchub:latest
+docker run --rm -it --name iota-rpchub-node -p 0.0.0.0:50051:50051 -v iota-rpchub:/data mixhq/iota-rpchub:latest --minWeightMagnitude 14
 ```
 
